@@ -1,0 +1,21 @@
+.swiper-pagination {
+  position: absolute; /* Or relative, depending on your layout */
+  bottom: 20px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 8px; /* Adjust space between bullets */
+}
+
+.swiper-pagination-bullet {
+  width: 8px; /* Adjust size */
+  height: 8px; /* Adjust size */
+  background-color: #ccc; /* Adjust color */
+  border-radius: 50%; /* Make bullets round */
+  cursor: pointer;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #333; /* Adjust color for active bullet */
+}

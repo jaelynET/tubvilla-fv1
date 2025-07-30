@@ -1,16 +1,69 @@
 @import "tailwindcss";
+/* @import "tailwindcss/preflight"; */
 
-:root {
+@root {
   --background: #ffffff;
   --foreground: #171717;
 }
+@theme {
+  /* open colors */
 
-@theme inline {
+  --color-main: #ffa94d;
+  --color-main-2: #ffb25f;
+  --color-text-1: #4c3317;
+
+  /*  #ffa94d tints */
+  --color-main-50: #fff6ed;
+  --color-main-100: #ffeedb;
+  --color-main-200: #ffe5ca;
+  --color-main-300: #ffddb8;
+  --color-main-400: #ffd4a6;
+  --color-main-500: #ffcb94;
+  --color-main-600: #ffc382;
+  --color-main-700: #ffba71;
+  --color-main-800: #ffb25f;
+
+  --color-primary-100: #ffe8cc;
+  --color-primary-200: #ffba71;
+  --color-primary-300: #ffc078;
+
+  /* --color-main */
+
+  /* grey */
+  --color-grey-0: #333;
+  /* #333 tints */
+  --color-grey-50: #ebebeb;
+  --color-grey-100: #d6d6d6;
+  --color-grey-200: #c2c2c2;
+  --color-grey-300: #adadad;
+  --color-grey-400: #999999;
+  --color-grey-500: #858585;
+  --color-grey-600: #707070;
+  --color-grey-700: #5c5c5c;
+  --color-grey-800: #474747;
+
+  /* #333 shades */
+  --color-shadegrey-50: #2e2e2e;
+  --color-shadegrey-100: #292929;
+  --color-shadegrey-200: #242424;
+  --color-shadegrey-300: #1f1f1f;
+  --color-shadegrey-400: #1a1a1a;
+  --color-shadegrey-500: #141414;
+  --color-shadegrey-600: #0f0f0f;
+  --color-shadegrey-700: #0a0a0a;
+  --color-shadegrey-800: #050505;
+ --color-shadegrey-900: #000000;
+
+  --color-grey-1: #474747;
+  --color-grey-2: #5c5c5c;
+}
+
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+} */
 
 @media (prefers-color-scheme: dark) {
   :root {
