@@ -4,7 +4,13 @@
 @root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-scheme: light;
 }
+
+:root {
+  color-scheme: light;
+}
+
 @theme {
   /* open colors */
 
@@ -52,7 +58,7 @@
   --color-shadegrey-600: #0f0f0f;
   --color-shadegrey-700: #0a0a0a;
   --color-shadegrey-800: #050505;
- --color-shadegrey-900: #000000;
+  --color-shadegrey-900: #000000;
 
   --color-grey-1: #474747;
   --color-grey-2: #5c5c5c;
