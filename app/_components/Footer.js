@@ -1,7 +1,11 @@
+import { FaInstagram } from "react-icons/fa";
+import { FaPinterest } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+
 function Footer() {
   return (
     <div className="bg-primary-100 p-5 ">
-      <nav className="grid grid-cols-2  justify-center pl-5 md:grid md:grid-cols-3  md:w-4xl md:pt-10 md:pl-15 ">
+      <nav className="grid grid-cols-2  justify-center pl-5 md:grid md:grid-cols-4   md:pt-10 md:pl-75 ">
         <div className="mb-5  ">
           <h3 className="font-semibold mb-1 text-sm md:text-base ">Company</h3>
           <ul>
@@ -22,9 +26,15 @@ function Footer() {
             Customer Service
           </h3>
           <ul>
-            <li className="text-xs md:text-sm">Contact us</li>
-            <li className="text-xs md:text-sm">Track my order</li>
+            <li className="text-xs md:text-sm">sales@tubvilla.com</li>
+            <li className="text-xs md:text-sm">Track your order</li>
           </ul>
+        </div>
+
+        <div className="flex gap-2">
+          <FaInstagram className="w-5 h-5" />
+          <FaFacebook className="w-5 h-5" />
+          <FaPinterest className="w-5 h-5" />
         </div>
       </nav>
     </div>

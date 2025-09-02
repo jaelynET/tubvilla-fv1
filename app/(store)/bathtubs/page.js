@@ -31,7 +31,7 @@ export default function Page(props) {
       </div> */}
       <div className="grid grid-cols-[auto_1fr] gap-10 mt-5">
         {/* <Filter /> */}
-        <Suspense fallback={<Loading />} key={length}>
+        <Suspense fallback={<Loading />}>
           {/* <FilterItems /> */}
           <BathubList
             filter={length}

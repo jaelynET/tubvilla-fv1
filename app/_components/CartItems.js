@@ -49,9 +49,11 @@ function CartItems() {
               type="submit"
               role="link"
             >
-              <Link href={"/bathtubs"}>
-                <p className="text-white font-bold">Shop Bestsellers</p>
-              </Link>
+              <div onClick={() => setShowCart((show) => !show)}>
+                <Link href={"/bathtubs"}>
+                  <p className="text-white font-bold">Shop Bestsellers</p>
+                </Link>
+              </div>
             </button>
           </div>
         ) : (
