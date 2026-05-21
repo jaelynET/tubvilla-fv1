@@ -1,3 +1,4 @@
+"use client";
 import { useState, useActionState } from "react"; // Added Suspense import
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form"; // update path if different
