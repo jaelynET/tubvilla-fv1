@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import MobileFullscreenGallery from "./MobileFullScreenGallery";
+import MobileFullscreenGallery from "./MobileFullscreenGallery";
 import Skeleton from "./Skeleton";
 
 function MobileGallery({ productImages }) {
