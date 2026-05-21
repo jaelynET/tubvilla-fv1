@@ -20,7 +20,7 @@ export default function KlarnaMessage({ amount }) {
   // Safeguard: Do not render or query Stripe during Vercel's SSR compilation phase
   if (!mounted || !amount) return null;
 
-  const totalAmount = Math.round(amount);
+  const totalAmount = Math.round(4500);
 
   return (
     <Elements stripe={stripePromise} key={totalAmount}>
