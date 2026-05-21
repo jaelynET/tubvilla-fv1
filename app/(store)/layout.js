@@ -8,17 +8,7 @@ import {
 } from "next/font/google";
 import "@/app/globals.css";
 import Header from "@/app/_components/Header";
-import {
-  Rubik,
-  Montserrat,
-  Oswald,
-  Schibsted_Grotesk,
-  Jost,
-  Playfair_Display,
-  Cormorant_Garamond,
-  Noto_Serif,
-  Montserrat,
-} from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import { CartProvider } from "../_components/CartContext";
 import { PageLoadingProvider } from "../_components/PageLoadingContext";
 import RouteLoader from "../RouteLoader";
@@ -34,11 +24,6 @@ import { DomProvider } from "../_components/DomContext";
 //   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 // );
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
 // Serif
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -48,28 +33,10 @@ const playfairDisplay = Playfair_Display({
 
 // Sans-Serif
 
-const sanss = Inter({
-  display: "swap",
-  subsets: ["latin"],
-  weight: "400",
-});
-
-const marcellus = PT_Serif({
-  variable: "--font-marcellus",
-  subsets: ["latin"],
-  weight: "400",
-});
-
 // const rubik = Rubik({
 //   display: "swap",
 //   subsets: ["latin"],
 // });
-
-const oswald = Oswald({
-  display: "swap",
-  subsets: ["latin"],
-  weight: "300",
-});
 
 export const metadata = {
   title: {

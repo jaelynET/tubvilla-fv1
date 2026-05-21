@@ -93,7 +93,7 @@ async function Page() {
           </div>
           <h4 className="text-xl font-bold text-gray-800">No orders yet</h4>
           <p className="text-gray-500 mt-2 mb-6">
-            Looks like you haven't made your first purchase.
+            Looks like you haven&apos;t made your first purchase.
           </p>
           <Link
             href="/"
