@@ -86,7 +86,10 @@ export async function showSimilarProducts(slug) {
     .map((s) => s.products)
     .filter(Boolean) // Safety check in case of orphaned category links
     .filter((p) => p.status !== "discontinued")
-    .filter((v, i, a) => a.findIndex((t) => t.modelName === v.modelName) === i);
+    .filter(
+      (v, i, a) =>
+        v.modelName && a.findIndex((t) => t.modelName === v.modelName) === i,
+    );
   if (similarProducts.length === 0) {
     const { data: fallbackCategory } = await supabase
 
@@ -119,7 +122,8 @@ export async function showSimilarProducts(slug) {
       .filter(Boolean)
       .filter((p) => p.status !== "discontinued")
       .filter(
-        (v, i, a) => a.findIndex((t) => t.modelName === v.modelName) === i,
+        (v, i, a) =>
+          v.modelName && a.findIndex((t) => t.modelName === v.modelName) === i,
       );
   }
 
