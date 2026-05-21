@@ -45,8 +45,9 @@ function ProductDetails({ product }) {
               {formatPrice(selectedVariant.regularPrice)}
             </span>
           </div>
-          {/* Keeps high ticket items accessible */}
-          <KlarnaMessage amount={selectedVariant.regularPrice} />
+          <div className="min-h-[40px] w-full block clear-both my-2">
+            <KlarnaMessage amount={selectedVariant.regularPrice} />
+          </div>
         </div>
         <div className="mt-6 border-y border-stone-100 py-4">
           <ProductVariant
