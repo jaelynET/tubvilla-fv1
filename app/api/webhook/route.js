@@ -52,6 +52,16 @@ export async function POST(req) {
     if (existing) {
       return NextResponse.json({ received: true });
     }
+    // Retrieve session object to get/expand shipping details
+    const checkOutSession = await stripe.checkout.sessions.retrieve(
+      event.data.object.id,
+    );
+
+    const shipping =
+      checkOutSession.shipping_details?.address ||
+      checkOutSession.customer_details?.address ||
+      null;
+    const billing = checkOutSession.customer_details?.address;
 
     // Insert order
     const { data: order, error: orderError } = await supabaseAdmin
@@ -63,8 +73,8 @@ export async function POST(req) {
         currency: session.currency,
         products: cart,
         status: "paid",
-        shipping_address: session.shipping_details?.address,
-        billing_address: session.customer_details?.address,
+        shipping_address: shipping,
+        billing_address: billing,
       })
       .select()
       .single();
