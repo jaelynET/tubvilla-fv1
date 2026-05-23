@@ -2,16 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ADDED_DISCOUNT } from "@/app/constants";
 import { formatPrice } from "../utils/format";
+import getProductStockStatus from "../utils/getProductStatus";
 
 function ProductCard({ product }) {
   const { slug, image, name, discount, product_variants } = product;
   const basePrice = product_variants?.[0]?.regularPrice || 0;
-  const isDiscontinued = product_variants?.some((v) =>
-    v.inventory?.some((i) => i.discontinued),
-  );
-  const inStock = product_variants?.some((variant) =>
-    variant.inventory?.some((item) => item.in_stock),
-  );
+  const stock = getProductStockStatus(product);
+  const inStock = stock.inStock;
+  const isDiscontinued = stock.discontinued;
   // const formattedPrice = (regularPrice / 100).toLocaleString("en-US", {
   //   minimumFractionDigits: 2,
   //   maximumFractionDigits: 2,

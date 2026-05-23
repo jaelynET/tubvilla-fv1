@@ -98,7 +98,9 @@ function Footer() {
                 sales@tubvilla.com
               </li>
 
-              <li className="text-xs md:text-sm">Mon, Wed, Fri / 11AM – 1PM PST</li>
+              <li className="text-xs md:text-sm">
+                Mon, Wed, Fri / 11AM – 1PM PST
+              </li>
             </ul>
           </div>
 
@@ -109,29 +111,29 @@ function Footer() {
             </h3>
 
             <div className="flex gap-4">
-              <a
-                href="#"
+              <Link
+                href="https://www.instagram.com/tubvilla"
                 aria-label="Instagram"
                 className="hover:opacity-70 transition"
               >
                 <FaInstagram className="w-5 h-5" />
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                href="https://www.facebook.com/tubvilla"
                 aria-label="Facebook"
                 className="hover:opacity-70 transition"
               >
                 <FaFacebook className="w-5 h-5" />
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                href="https://www.pinterest.com/tubvilla"
                 aria-label="Pinterest"
                 className="hover:opacity-70 transition"
               >
                 <FaPinterest className="w-5 h-5" />
-              </a>
+              </Link>
             </div>
           </div>
         </nav>

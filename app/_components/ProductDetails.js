@@ -15,23 +15,44 @@ import { formatPrice } from "../utils/format";
 
 function ProductDetails({ product }) {
   const { name, description, product_variants } = product;
-  const [selectedVariant, setSelectedVariant] = useState(
-    product.product_variants?.[0] || {},
-  );
-  const isDiscontinued = product_variants?.some((v) =>
-    v.inventory?.some((i) => i.discontinued),
+  // const [selectedVariant, setSelectedVariant] = useState(
+  //   product.product_variants?.[0] || {},
+  // );
+  const firstAvailableVariant =
+    product.product_variants?.find((v) =>
+      v.inventory?.some((i) => i.in_stock && !i.discontinued),
+    ) ||
+    product.product_variants?.[0] ||
+    {};
+
+  const [selectedVariant, setSelectedVariant] = useState(firstAvailableVariant);
+
+  const variants = product_variants || [];
+
+  const allInventory = variants.flatMap((v) => v.inventory || []);
+
+  // 🚨 DISCONTINUED = ALL items discontinued
+  const isDiscontinued =
+    allInventory.length > 0 &&
+    allInventory.every((i) => i.discontinued === true);
+
+  // 🚨 IN STOCK = at least one valid stock item
+  const inStock = allInventory.some(
+    (i) => i.in_stock === true && i.quantity > 0 && !i.discontinued,
   );
 
-  const inStock = product_variants?.some((v) =>
-    v.inventory?.some((i) => i.in_stock),
-  );
+  // 🚨 OUT OF STOCK (explicit state)
+  const outOfStock = !isDiscontinued && !inStock && allInventory.length > 0;
+
+  // 🚨 NO INVENTORY AT ALL (important edge case)
+  const noInventory = allInventory.length === 0;
 
   return (
     <>
       <div>
         {isDiscontinued ? (
           <p className="text-xs uppercase text-stone-400">Discontinued</p>
-        ) : !inStock ? (
+        ) : outOfStock || noInventory ? (
           <p className="text-xs uppercase text-neutral-500">Out of Stock</p>
         ) : null}
         <h1 className="text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl md:text-4xl leading-tight">

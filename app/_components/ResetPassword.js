@@ -1,90 +1,83 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { updatePasswordAction } from "../_lib/actions";
-import { startTransition, useActionState, useEffect } from "react";
+import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { updatePasswordAction } from "../_lib/actions";
 import { toast } from "sonner";
 
 function ResetPassword({ isEditProfile = false }) {
-  const { register, formState, getValues, handleSubmit } = useForm();
-  const { errors } = formState;
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState(
-    async (prevState, formAction) => {
-      const password = formAction.get("password");
-      return await updatePasswordAction(password);
-    },
-    { success: false },
-  );
+  const [state, formAction, isPending] = useActionState(updatePasswordAction, {
+    success: false,
+  });
 
   useEffect(() => {
-    if (state?.success && !isEditProfile) {
+    if (state?.success) {
       toast.success("Updated successfully!");
-    }
-    if (!isEditProfile) {
-      const timer = setTimeOut(() => {
+
+      const timer = setTimeout(() => {
         router.push("/");
       }, 2000);
+
       return () => clearTimeout(timer);
     }
-  }, [state?.success, router, isEditProfile]);
+  }, [state?.success, router]);
 
   return (
-    <>
-      {!state.success && (
-        <form action={formAction}>
+    <div className="max-w-md mx-auto space-y-4">
+      {!state?.success && (
+        <form action={formAction} className="space-y-4">
+          {/* Password */}
           <div>
-            <h3>Enter New Password</h3>
-            <p className="text-red-500">{errors?.password?.message}</p>
+            <h3 className="font-medium">Enter New Password</h3>
 
             <input
-              type="text"
-              placeholder="password"
-              id="password"
-              className=" border border-primary-400 rounded-sm py-3 px-3"
-              {...register("password", {
-                required: "This field is required",
-                minLength: {
-                  value: 8,
-                  message:
-                    "Password needs to have a minimum length of 8 characters",
-                },
-              })}
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="border rounded-sm py-3 px-3 w-full"
             />
+
+            {state?.errors?.password && (
+              <p className="text-red-500 text-sm">{state.errors.password}</p>
+            )}
           </div>
+
+          {/* Confirm Password */}
           <div>
-            <h3>Confirm password</h3>
-            <p className="text-red-500">{errors?.passwordConfirm?.message}</p>
+            <h3 className="font-medium">Confirm Password</h3>
 
             <input
-              type="text"
-              placeholder="confirm password"
-              id="passwordConfirm"
-              className=" border border-primary-400 rounded-sm py-3 px-3"
-              {...register("passwordConfirm", {
-                required: "This field is required",
-                validate: (value) =>
-                  value === getValues().password || "Passwords need to match",
-              })}
+              type="password"
+              name="passwordConfirm"
+              placeholder="Confirm password"
+              className="border rounded-sm py-3 px-3 w-full"
             />
+
+            {state?.errors?.passwordConfirm && (
+              <p className="text-red-500 text-sm">
+                {state.errors.passwordConfirm}
+              </p>
+            )}
           </div>
+
+          {/* Submit */}
           <button
             type="submit"
-            className="rounded-md bg-blue-500 py-3 px-3 cursor-pointer"
             disabled={isPending}
+            className="bg-blue-500 text-white py-3 px-4 rounded-md w-full"
           >
-            {isPending ? "Updating..." : "Reset your password"}
+            {isPending ? "Updating..." : "Reset Password"}
           </button>
         </form>
       )}
-      {state?.success && isEditProfile && (
-        <p className="text-green-600 text-sm mt-2">
-          Your password has been updated
-        </p>
+
+      {/* SUCCESS UI */}
+      {state?.success && (
+        <p className="text-green-600 text-sm">Your password has been updated</p>
       )}
-    </>
+    </div>
   );
 }
 

@@ -1,72 +1,222 @@
 "use client";
-
-import Image from "next/image";
-import { useMemo, useState } from "react";
-import Klarna from "@/public/Klarna.png";
-// 2. UPDATED CHILD COMPONENT
+import React from "react";
 
 function ProductVariant({ product, selectedVariant, setSelectedVariant }) {
   const variants = product.product_variants || [];
 
-  // Derived state: Automatically calculate activeFinish from the parent state
-  const activeFinish = selectedVariant?.colorFinish || variants[0]?.colorFinish;
+  const checkStock = (variant) => {
+    if (!variant) {
+      return {
+        exists: false,
+        inStock: false,
+        discontinued: false,
+        hasInventory: false,
+      };
+    }
 
-  const uniqueFinishes = useMemo(() => {
-    return [...new Set(variants.map((v) => v.colorFinish))];
-  }, [variants]);
+    const inventory = variant.inventory || [];
 
-  const filteredVariants = useMemo(() => {
-    return variants.filter((v) => v.colorFinish === activeFinish);
-  }, [activeFinish, variants]);
+    // No inventory rows attached
+    if (inventory.length === 0) {
+      return {
+        exists: true,
+        inStock: false,
+        discontinued: false,
+        hasInventory: false,
+      };
+    }
+
+    const discontinued = inventory.some((i) => i.discontinued);
+
+    const inStock = inventory.some((i) => i.in_stock && i.quantity > 0);
+
+    return {
+      exists: true,
+      inStock: inStock && !discontinued,
+      discontinued,
+      hasInventory: true,
+    };
+  };
+
+  const sortedVariants = [...variants].sort((a, b) => {
+    const aStock = checkStock(a).inStock ? 0 : 1;
+    const bStock = checkStock(b).inStock ? 0 : 1;
+    return aStock - bStock;
+  });
+
+  const activeFinish = selectedVariant?.colorFinish;
+  const activeDrainFinish = selectedVariant?.drainFinish;
+  const activeSize = selectedVariant?.nominal_size;
+
+  const finishes = [
+    ...new Set(sortedVariants.map((v) => v.colorFinish)),
+  ].filter(Boolean);
+
+  const drainFinishes = [
+    ...new Set(sortedVariants.map((v) => v.drainFinish)),
+  ].filter(Boolean);
+
+  const sizes = [...new Set(sortedVariants.map((v) => v.nominal_size))].filter(
+    Boolean,
+  );
+  const renderStatus = ({ discontinued, exists, inStock, hasInventory }) => {
+    if (!hasInventory) return "(Unavailable)";
+    if (discontinued) return "(Discontinued)";
+    if (exists && !inStock) return "(OOS)";
+    return "";
+  };
 
   return (
-    <div className="flex flex-col gap-6 p-5">
-      {/* Removed duplicated local price display; parent handles it now */}
-
-      {/* --- COLOR SELECTOR --- */}
+    <div className="flex flex-col gap-6">
+      {/* FINISH */}
       <div>
-        <h3 className="text-sm font-bold uppercase mb-2">
-          Finish: {activeFinish}
-        </h3>
-        <div className="flex gap-2">
-          {uniqueFinishes.map((finish) => (
-            <button
-              key={finish}
-              onClick={() => {
-                const firstInColor = variants.find(
-                  (v) => v.colorFinish === finish,
-                );
-                if (firstInColor) setSelectedVariant(firstInColor);
-              }}
-              className={`px-3 py-2 border text-sm transition ${
-                activeFinish === finish
-                  ? "border-black bg-black text-white"
-                  : "border-stone-300"
-              }`}
-            >
-              {finish}
-            </button>
-          ))}
+        <h3 className="text-sm font-bold mb-2">Finish: {activeFinish}</h3>
+
+        <div className="flex gap-2 flex-wrap">
+          {finishes.map((f) => {
+            const match = variants.find(
+              (v) =>
+                v.colorFinish === f &&
+                v.drainFinish === activeDrainFinish &&
+                v.nominal_size === activeSize,
+            );
+
+            const stock = checkStock(match);
+
+            return (
+              <button
+                key={f}
+                disabled={!stock.exists || stock.discontinued}
+                onClick={() => match && setSelectedVariant(match)}
+                className={`px-3 py-2 border text-sm transition
+                  ${
+                    activeFinish === f
+                      ? "bg-black text-white border-black"
+                      : "bg-white border-stone-200"
+                  }
+                  ${
+                    !stock.exists
+                      ? "opacity-25 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.discontinued
+                      ? "opacity-40 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.exists && !stock.inStock && !stock.discontinued
+                      ? "border-dashed text-stone-400"
+                      : ""
+                  }
+                `}
+              >
+                {f} {renderStatus(stock)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* --- SIZE SELECTOR --- */}
+      {/* DRAIN FINISH */}
       <div>
-        <h3 className="text-sm font-bold uppercase mb-2">Size:</h3>
+        <h3 className="text-sm font-bold mb-2">
+          Drain Finish: {activeDrainFinish}
+        </h3>
+
         <div className="flex gap-2 flex-wrap">
-          {filteredVariants.map((v) => (
-            <button
-              key={v.id}
-              onClick={() => setSelectedVariant(v)}
-              className={`border py-2 px-4 transition ${
-                v.id === selectedVariant?.id
-                  ? "border-amber-500 bg-amber-500 text-white shadow-sm"
-                  : "border-stone-200 bg-white text-stone-700 hover:border-amber-400 hover:bg-amber-50/30"
-              }`}
-            >
-              <span className="text-sm font-medium">{v.nominal_size}</span>
-            </button>
-          ))}
+          {drainFinishes.map((d) => {
+            const match = variants.find(
+              (v) =>
+                v.drainFinish === d &&
+                v.colorFinish === activeFinish &&
+                v.nominal_size === activeSize,
+            );
+
+            const stock = checkStock(match);
+
+            return (
+              <button
+                key={d}
+                disabled={!stock.exists || stock.discontinued}
+                onClick={() => match && setSelectedVariant(match)}
+                className={`px-3 py-2 border text-sm transition
+                  ${
+                    activeDrainFinish === d
+                      ? "bg-black text-white border-black"
+                      : "bg-white border-stone-200"
+                  }
+                  ${
+                    !stock.exists
+                      ? "opacity-25 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.discontinued
+                      ? "opacity-40 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.exists && !stock.inStock && !stock.discontinued
+                      ? "border-dashed text-stone-400"
+                      : ""
+                  }
+                `}
+              >
+                {d} {renderStatus(stock)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* SIZE */}
+      <div>
+        <h3 className="text-sm font-bold mb-2">Size: {activeSize}</h3>
+
+        <div className="flex gap-2 flex-wrap">
+          {sizes.map((s) => {
+            const match = variants.find(
+              (v) =>
+                v.nominal_size === s &&
+                v.colorFinish === activeFinish &&
+                v.drainFinish === activeDrainFinish,
+            );
+
+            const stock = checkStock(match);
+
+            return (
+              <button
+                key={s}
+                disabled={!stock.exists || stock.discontinued}
+                onClick={() => match && setSelectedVariant(match)}
+                className={`px-4 py-2 border text-sm transition
+                  ${
+                    activeSize === s
+                      ? "bg-amber-500 text-white border-amber-500"
+                      : "bg-white border-stone-200"
+                  }
+                  ${
+                    !stock.exists
+                      ? "opacity-25 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.discontinued
+                      ? "opacity-40 line-through cursor-not-allowed"
+                      : ""
+                  }
+                  ${
+                    stock.exists && !stock.inStock && !stock.discontinued
+                      ? "border-dashed text-stone-400"
+                      : ""
+                  }
+                `}
+              >
+                {s} {renderStatus(stock)}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

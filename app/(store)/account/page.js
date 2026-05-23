@@ -12,16 +12,16 @@ async function Page() {
   const userId = data.user.id;
   const orders = await getOrders(userId);
 
-  const { fullName } = data.user.user_metadata;
-  const firstName = fullName.split(" ").at(0);
+  // const { fullName } = data.user.user_metadata;
+  // const firstName = fullName.split(" ").at(0);
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-gray-50 min-h-screen">
       {/* Header / Welcome Section */}
       <div className="w-full h-24 flex items-center px-6 mb-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
-        <h2 className="text-2xl font-bold text-gray-800">
+        {/* <h2 className="text-2xl font-bold text-gray-800">
           Welcome back, <span>{firstName}!</span>
-        </h2>
+        </h2> */}
       </div>
       <div className="flex justify-between items-end mb-4 px-2">
         <h3 className="text-lg font-semibold text-gray-700 uppercase tracking-wider">

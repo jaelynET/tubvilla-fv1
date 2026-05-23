@@ -114,9 +114,14 @@ export async function forgotPasswordAction(formData) {
 
   const { error } = await forgotPassword(userEmail);
   if (error) {
-    return { message: "Could not reset passsword" };
+    return {
+      success: false,
+      error: "Failed to send reset link",
+    };
   }
-  return { message: "Check your email for the reset link." };
+  return {
+    success: true,
+  };
 }
 
 export async function resetPasswordAction(formData) {
@@ -129,10 +134,40 @@ export async function resetPasswordAction(formData) {
   return { message: "Check your email for the reset link." };
 }
 
-export async function updatePasswordAction(newPassword) {
-  console.log(newPassword);
-  const { error } = await updatePassword(newPassword);
-  if (error) return { success: false, error: error.message };
+export async function updatePasswordAction(prevState, formData) {
+  const password = formData.get("password");
+  const passwordConfirm = formData.get("passwordConfirm");
+
+  const schema = z.object({
+    password: z.string().min(8),
+  });
+
+  const result = schema.safeParse({ password });
+
+  if (!result.success) {
+    return {
+      success: false,
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  if (password !== passwordConfirm) {
+    return {
+      success: false,
+      errors: {
+        passwordConfirm: ["Passwords do not match"],
+      },
+    };
+  }
+
+  const { error } = await updatePassword(password);
+  if (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+
   return { success: true };
 }
 

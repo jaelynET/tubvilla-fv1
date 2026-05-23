@@ -62,7 +62,7 @@ function CartItems() {
               type="button"
             >
               <div onClick={() => setShowCart((show) => !show)}>
-                <Link href={"/bathtubs"}>
+                <Link href={"/collections/bathtubs/freestanding"}>
                   <p className="text-white font-bold">Shop Bestsellers</p>
                 </Link>
               </div>

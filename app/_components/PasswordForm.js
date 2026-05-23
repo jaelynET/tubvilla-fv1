@@ -32,14 +32,12 @@ function PasswordForm({ userEmail }) {
     });
 
     if (error) {
-      setAuthError(error.message);
+      setAuthError("Invalid email or password. Please try again.");
+      setIsRedirecting(false);
       return;
     }
 
-    // const finalPath = `${redirectTo}${redirectTo.includes("?") ? "&" : "?"}autoCheckout=true`;
     router.replace(next);
-
-    // router.replace(finalPath);
   }
 
   return (
