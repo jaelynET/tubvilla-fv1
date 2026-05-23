@@ -111,14 +111,18 @@ export async function POST(req) {
       status: "pending",
     });
 
-    await inngest.send({
-      name: "checkout/started",
-      data: {
-        stripeSessionId: session.id,
-        email: customerEmail,
-        userId,
-      },
-    });
+    try {
+      await inngest.send({
+        name: "checkout/started",
+        data: {
+          stripeSessionId: session.id,
+          email: customerEmail,
+          userId,
+        },
+      });
+    } catch (err) {
+      console.error("Inngest send failed:", err);
+    }
 
     // ---------------------------------------------------
     // 8. Return Stripe URL to frontend
