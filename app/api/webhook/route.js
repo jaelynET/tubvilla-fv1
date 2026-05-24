@@ -75,6 +75,8 @@ export async function POST(req) {
         status: "paid",
         shipping_address: shipping,
         billing_address: billing,
+        customer_email:
+          session.customer_details?.email || session.customer_email,
       })
       .select()
       .single();

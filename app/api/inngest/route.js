@@ -32,20 +32,16 @@ const sendShippingEmail = inngest.createFunction(
     const orderData = await step.run("get-customer-email", async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select(
-          `userId,
-          users (
-          email
-      )
-      `,
-        )
+        .select("customer_email")
         .eq("order_id", orderId)
         .single();
       // console.log(data);
-      const email = data?.users?.email;
+      const email = data.customer_email;
       // console.log(email);
-      if (error || !data) throw new Error("Could not find order email");
-      return { email };
+      if (error || !data?.customer_email) {
+        throw new Error("Could not find order email");
+      }
+      return { email: data.customer_email };
     });
 
     // Send the shipping email
