@@ -36,7 +36,7 @@ const sendShippingEmail = inngest.createFunction(
         .eq("order_id", orderId)
         .single();
       // console.log(data);
-      const email = data.customer_email;
+
       // console.log(email);
       if (error || !data?.customer_email) {
         throw new Error("Could not find order email");
