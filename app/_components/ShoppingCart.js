@@ -13,19 +13,22 @@ export default function ShoppingCart() {
   }, []);
 
   return (
-    <div className="relative">
-      <ShoppingCartIcon
-        className="w-6 h-6 hover:text-main cursor-pointer transition-colors mr-3 text-icon"
-        onClick={() => setShowCart((show) => !show)}
-      />
+  <div className="relative inline-block">
+    <ShoppingCartIcon
+      className="w-6 h-6 hover:text-main cursor-pointer transition-colors mr-2 sm:mr-3 text-icon"
+      onClick={() => setShowCart((show) => !show)}
+    />
 
-      {/* Keep the notification badge conditional on isClient */}
-      {isClient && cart.length > 0 && (
-        <span className="rounded-full bg-red-500 w-[0.675rem] h-[0.675rem] z-10 absolute top-0 right-0"></span>
-      )}
+    {/* Perfectly aligned responsive notification badge */}
+    {isClient && cart.length > 0 && (
+      <span className="absolute top-0 right-2 sm:right-3 flex h-2 w-2 sm:h-2.5 sm:w-2.5">
+        <span className="relative inline-flex rounded-full bg-red-500 h-full w-full"></span>
+      </span>
+    )}
 
-      {/* REMOVE the isClient guard from here so the outer structural container renders on the server */}
-      <CartItems />
-    </div>
-  );
+    {/* Outer structural container renders on the server */}
+    <CartItems />
+  </div>
+);
+
 }

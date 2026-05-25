@@ -130,6 +130,7 @@ export async function POST(req) {
           email: session.customer_details.email,
           orderId: order.order_id,
           total: session.amount_total,
+          items: itemsToInsert,
         },
       });
     } catch (err) {

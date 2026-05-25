@@ -120,7 +120,7 @@ function Footer() {
               </Link>
 
               <Link
-                href="https://www.facebook.com/tubvilla"
+                href="https://www.facebook.com/profile.php?id=61589861829653&mibextid=ZbWKwL"
                 aria-label="Facebook"
                 className="hover:opacity-70 transition"
               >

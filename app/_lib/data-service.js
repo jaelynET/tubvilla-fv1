@@ -1,8 +1,11 @@
 import { applySort } from "../filters/config/sortby";
-import { supabase } from "./supabase";
+import { supabaseAdmin } from "../utils/supabase/supabaseAdmin";
+// import { supabase } from "./supabase";
 
 export const getBathtubs = async function () {
-  const { data, count, error } = await supabase.from("products").select("*");
+  const { data, count, error } = await supabaseAdmin
+    .from("products")
+    .select("*");
   // .select("id,name,image");
 
   if (error) {
@@ -13,7 +16,7 @@ export const getBathtubs = async function () {
 };
 
 export async function getBathtub(slug) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select(
       `*,  product_variants(
@@ -39,7 +42,7 @@ export async function getBathtub(slug) {
 }
 
 export async function showSimilarProducts(slug) {
-  const { data: product, error: productError } = await supabase
+  const { data: product, error: productError } = await supabaseAdmin
     .from("products")
     .select("id,product_categories(categoryId,categories(id,name,slug))")
     .eq("slug", slug)
@@ -57,7 +60,7 @@ export async function showSimilarProducts(slug) {
     return { retrieveStyle, similarProducts: [] };
   }
 
-  const { data: similar, error: similarError } = await supabase
+  const { data: similar, error: similarError } = await supabaseAdmin
     .from("product_categories")
     .select(
       `products(
@@ -91,14 +94,14 @@ export async function showSimilarProducts(slug) {
         v.modelName && a.findIndex((t) => t.modelName === v.modelName) === i,
     );
   if (similarProducts.length === 0) {
-    const { data: fallbackCategory } = await supabase
+    const { data: fallbackCategory } = await supabaseAdmin
 
       .from("categories")
       .select("id")
       .eq("slug", "freestanding")
       .single();
 
-    const { data: fallback } = await supabase
+    const { data: fallback } = await supabaseAdmin
       .from("product_categories")
       .select(
         `
@@ -149,7 +152,7 @@ export async function showSimilarProducts(slug) {
 }
 
 // export async function compatibleProducts(productId) {
-//   const { data, error } = await supabase
+//   const { data, error } = await supabaseAdmin
 //     .from("product_compatibility")
 //     // change bathtubs! to products! 2fk's link to same table
 //     .select("compatibleId,products!compatibleId(*)")
@@ -163,7 +166,7 @@ export async function showSimilarProducts(slug) {
 //   return data;
 // }
 export async function compatibleFaucets() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select(`*, product_variants(*)`)
     .eq("product_type", "faucet")
@@ -176,7 +179,7 @@ export async function compatibleFaucets() {
 }
 
 export async function getProductImages(id) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("productImages")
     .select("id,image,position")
     .eq("productId", id)
@@ -190,7 +193,7 @@ export async function getProductImages(id) {
 }
 
 export async function getOrders(id) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("orders")
     .select("*,order_items(*)")
     .eq("userId", id);
@@ -203,7 +206,7 @@ export async function getOrders(id) {
 }
 
 export async function getOrder(orderNumber) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("orders")
     .select("*")
     .eq("order_number", orderNumber);
@@ -216,7 +219,7 @@ export async function getOrder(orderNumber) {
 }
 
 export async function userReview(userReview) {
-  const { error } = await supabase.from("reviews").insert([userReview]);
+  const { error } = await supabaseAdmin.from("reviews").insert([userReview]);
   if (error) {
     console.error(error);
     throw new Error("Reviews could not be INSERTED");
@@ -224,7 +227,7 @@ export async function userReview(userReview) {
 }
 
 export async function getReviews(id) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select("id,reviews(*)")
     .eq("id", id);
@@ -237,7 +240,7 @@ export async function getReviews(id) {
 }
 
 export async function popularTubs() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select(
       `
@@ -275,7 +278,7 @@ export async function popularTubs() {
 }
 
 // export async function popularTubs() {
-//   const { data, error } = await supabase
+//   const { data, error } = await supabaseAdmin
 //     .from("products")
 //     .select("id,name,regularPrice,discount,image,averageRating")
 //     .gte("averageRating", 4)
@@ -293,7 +296,7 @@ export async function popularTubs() {
 
 export async function underXTubs() {
   const dollarsToCents = (amount) => amount * 100;
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select(
       `
@@ -332,7 +335,7 @@ export async function underXTubs() {
 }
 
 export async function limitedDeals() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("products")
     .select(
       `
@@ -362,7 +365,7 @@ export async function limitedDeals() {
 }
 
 export async function getCategories() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("categories")
     .select("id,name,product_type,slug");
 
@@ -378,7 +381,7 @@ export async function getCategories() {
 }
 
 export async function getProductType(subcategory) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("categories")
     .select("product_type")
     .eq("slug", subcategory);
@@ -395,7 +398,7 @@ export async function getB(productType, filters, page = 1, limit = 12) {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
-  let query = supabase
+  let query = supabaseAdmin
     .from("products")
     .select(
       `

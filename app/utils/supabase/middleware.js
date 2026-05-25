@@ -28,24 +28,25 @@ export async function updateSession(request = NextRequest) {
   // issues with users being randomly logged out.
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
-  const pathname = request.nextUrl.pathName;
+  const { pathname } = request.nextUrl;
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith("/account")
-
-    // !request.nextUrl.pathname.startsWith("/login") &&
-    // !request.nextUrl.pathname.startsWith("/auth")
-  ) {
+  if (!user && pathname.startsWith("/account")) {
     // no user, potentially respond by redirecting the user to the login page
-    const callbackUrl = request.nextUrl.pathname + request.nextUrl.search;
+    const callbackUrl = pathname + request.nextUrl.search;
 
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("rdirect", callbackUrl);
+    return NextResponse.redirect(url);
+  }
+
+  if (user && pathname.startsWith("/login")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/account";
+
     return NextResponse.redirect(url);
   }
 
