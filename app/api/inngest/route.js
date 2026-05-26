@@ -14,7 +14,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendOrderEmail = inngest.createFunction(
   { id: "send-order-email", triggers: [{ event: "order/created" }] },
   async ({ event, step }) => {
-    const { email, orderId, total } = event.data;
+    const { email, orderId, total, items } = event.data;
 
     // Correct way inside Inngest function
     await step.run("send-email", async () => {
