@@ -17,6 +17,7 @@ import CartItems from "../_components/CartItems";
 import Footer from "../_components/Footer";
 import StripeElementsProvider from "../_components/StripeElementsProvider";
 import { DomProvider } from "../_components/DomContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 // import { loadStripe } from "@stripe/stripe-js";
 // import { Elements } from "@stripe/react-stripe-js";
 
@@ -49,6 +50,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const gaId = process.env.NEXT_PUBLIC_GOOGLE_ID;
   return (
     <html lang="en">
       <body className={`${playfairDisplay.className} antialiased  `}>
@@ -67,8 +69,7 @@ export default function RootLayout({ children }) {
           <Footer />
         </div>
       </body>
+      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   );
 }
-
-// <body className={`${playfairDisplay.className} antialiased f `}>
