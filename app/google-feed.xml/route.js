@@ -72,7 +72,7 @@ export async function GET() {
   <g:item_group_id>${variant.productId}</g:item_group_id>
   <g:title><![CDATA[${title}]]></g:title>
   <g:description><![CDATA[${product?.description || ""}]]></g:description>
-  <g:link>https://tubvilla.com/${product?.slug}</g:link>
+  <g:link>https://tubvilla.com/products/${product?.slug}</g:link>
 
   ${variant.image ? `<g:image_link>${variant.image}</g:image_link>` : ""}
 
