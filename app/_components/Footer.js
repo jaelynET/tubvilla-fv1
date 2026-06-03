@@ -101,6 +101,11 @@ function Footer() {
               <li className="text-xs md:text-sm">
                 Mon, Wed, Fri / 11AM – 1PM PST
               </li>
+              <address className="not-italic text-xs md:text-sm">
+                177 W Buchanan Rd
+                <br />
+                Pittsburg, CA 94565
+              </address>
             </ul>
           </div>
 
