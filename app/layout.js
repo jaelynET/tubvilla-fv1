@@ -22,15 +22,15 @@ export default function RootLayout({ children }) {
       {adsId && (
         <Script id="google-ads-init" strategy="afterInteractive">
           {`
-      window.dataLayer = window.dataLayer || [];
-      if (!window.gtag) {
-        function gtag(){ window.dataLayer.push(arguments); }
-        window.gtag = gtag;
-      }
-      
-      // ADD THE 'AW-' PREFIX DIRECTLY IN FRONT OF YOUR ID HERE
-      window.gtag('config', 'AW-${adsId}'); 
-    `}
+            window.dataLayer = window.dataLayer || [];
+            if (!window.gtag) {
+              function gtag(){ window.dataLayer.push(arguments); }
+              window.gtag = gtag;
+            }
+            
+            // FIX: Changed single quotes to backticks so the variable evaluates
+            window.gtag('config', \`AW-${adsId}\`); 
+          `}
         </Script>
       )}
     </html>
