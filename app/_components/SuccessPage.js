@@ -21,6 +21,8 @@ function SuccessPage({ customerEmail }) {
 
         // 3. Generate a random or timestamped order ID if you don't have one from a backend
         const orderId = "ORD-" + Date.now();
+        const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+        const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_CONVERSION_LABEL;
 
         // 4. Safely verify that gtag exists before running
         if (
@@ -29,7 +31,7 @@ function SuccessPage({ customerEmail }) {
         ) {
           window.gtag("event", "purchase", {
             // Links the event to your Google Ads configuration
-            send_to: `AW-${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}/${process.env.NEXT_PUBLIC_GOOGLE_CONVERSION_LABEL}`,
+            send_to: `AW-${adsId}/${conversionLabel}`,
             transaction_id: orderId,
             value: totalValue,
             currency: "USD", // Change to your local currency code if needed
@@ -61,7 +63,7 @@ function SuccessPage({ customerEmail }) {
       <a href="mailto:sales@tubvilla.com">sales@tubvilla.com</a>
       <Link
         href="/"
-        className="w-xs rounded-md bg-main py-3 px-3 cursor-pointer block mt-4 "
+        className="w-xs rounded-md bg-button py-3 px-3 cursor-pointer block mt-4 "
       >
         Continue shopping
       </Link>

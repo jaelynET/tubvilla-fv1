@@ -20,18 +20,18 @@ export default function RootLayout({ children }) {
       <body>{children}</body>
       {gaId && <GoogleAnalytics gaId={gaId} />}
       {adsId && (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              if (typeof gtag === 'undefined') {
-                function gtag(){dataLayer.push(arguments);}
-                window.gtag = gtag;
-              }
-              gtag('config', '${adsId}');
-            `,
-          }}
-        />
+        <Script id="google-ads-init" strategy="afterInteractive">
+          {`
+      window.dataLayer = window.dataLayer || [];
+      if (!window.gtag) {
+        function gtag(){ window.dataLayer.push(arguments); }
+        window.gtag = gtag;
+      }
+      
+      // ADD THE 'AW-' PREFIX DIRECTLY IN FRONT OF YOUR ID HERE
+      window.gtag('config', 'AW-${adsId}'); 
+    `}
+        </Script>
       )}
     </html>
   );
