@@ -137,11 +137,6 @@ export async function showSimilarProducts(slug) {
     return {
       ...p,
       regularPrice: basePrice,
-      formattedPrice: new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }).format(basePrice / 100),
     };
   });
 

@@ -13,6 +13,7 @@ import ProductGridSkeleton from "./ProductGridSkeleton";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "../utils/format";
 
 // if (!similarProducts?.length) {
 //   return <ProductGridSkeleton count={5} isCarousel />;
@@ -63,7 +64,7 @@ function SimilarProductCard({ similarProducts, slug }) {
               </h4>
             </div>
             <span className="text-sm font-bold text-stone-900">
-              {product.formattedPrice}
+              {formatPrice(product.regularPrice)}
             </span>
           </Link>
         </SwiperSlide>
