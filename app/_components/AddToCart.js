@@ -36,14 +36,14 @@ function AddToCart({ product, selectedVariant }) {
 
     if (ADS_TRACKING_ID) {
       sendGtagEvent("add_to_cart", {
-        send_to: ADS_TRACKING_ID,
+        send_to: `AW-${ADS_TRACKING_ID}`,
         value: totalValueNumeric, // Total cart addition value (Price * Quantity)
         currency: "USD",
         items: [
           {
             // ⚠️ Ensure productData.id matches your Google Merchant Center variant feed format
-            id: productData.id || product.id,
-            name: `${productData.name} - ${productData.finish} (${productData.size})`,
+            item_id: productData.sku || product.manufacturer_part_number,
+            item_name: `${productData.name} - ${productData.finish} (${productData.size})`,
             price: unitPriceNumeric,
             quantity: productData.quantity,
           },
