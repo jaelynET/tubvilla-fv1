@@ -37,7 +37,7 @@ function AddToCart({ product, selectedVariant }) {
     if (typeof window !== "undefined" && window.gtag) {
       console.log("Sending ATC event");
 
-      window.gtag("event", "add_to_cart", {
+      window.gtag("event", "conversion", {
         send_to: "AW-18204020684/NaIACLrR9cYcEMyfrehD",
         value: totalValueNumeric,
         currency: "USD",
