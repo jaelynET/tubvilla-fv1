@@ -35,12 +35,27 @@ function AddToCart({ product, selectedVariant }) {
     console.log("ATC clicked");
 
     if (typeof window !== "undefined" && window.gtag) {
-      console.log("Sending ATC event");
+      console.log("Sending ATC event to Google Ads and GA4");
 
+      // 1. THIS SENDS TO GOOGLE ADS (Keep this exactly as it is)
       window.gtag("event", "conversion", {
         send_to: "AW-18204020684/NaIACLrR9cYcEMyfrehD",
         value: totalValueNumeric,
         currency: "USD",
+        items: [
+          {
+            item_id: productData.manufacturer_part_number,
+            item_name: productData.name,
+            price: unitPriceNumeric,
+            quantity: productData.quantity,
+          },
+        ],
+      });
+
+      // 2. ADD THIS NEW BLOCK BELOW TO SEND TO GA4
+      window.gtag("event", "add_to_cart", {
+        currency: "USD",
+        value: totalValueNumeric,
         items: [
           {
             item_id: productData.manufacturer_part_number,
